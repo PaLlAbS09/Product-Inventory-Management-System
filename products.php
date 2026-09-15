@@ -1,0 +1,195 @@
+<?php 
+session_start();
+
+// Allow access if EITHER an admin OR a regular user is logged in
+$is_admin = isset($_SESSION['admin_id']) || (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true);
+$is_user = isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true;
+
+if (!$is_admin && !$is_user) {
+    header("Location: users_login.php");
+    exit();
+}
+
+include 'config/dbcon.php';
+
+// Include Header and Navigation Sidebar
+include 'includes/header.php';
+if ($is_admin) {
+    include 'includes/nav.php';
+} else {
+    include 'includes/user_nav.php';
+}
+?>
+
+<!-- Main Content Area -->
+<main class="flex-1 p-8 overflow-y-auto md:ml-[280px]">
+    <div class="max-w-7xl mx-auto space-y-8">
+                 
+        <!-- Header Section -->
+        <header class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-700">Inventory Catalog</h1>
+                <p class="text-sm text-slate-500">Browse available products and place orders.</p>
+            </div>
+            
+            <!-- Show '+ Add Product' button ONLY to Admins -->
+            <?php if ($is_admin): ?>
+                <button onclick="document.getElementById('addProductModal').classList.remove('hidden')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition">
+                    + Add Product
+                </button>
+            <?php endif; ?>
+        </header>
+
+        <!-- Advanced Search & Filter Engine -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+            <h2 class="text-lg font-semibold mb-4">Search & Filter</h2>
+            <form id="searchForm" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input type="text" name="keyword" placeholder="Search name, desc, SKU..." class="border p-2 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="date" name="start_date" class="border p-2 rounded-lg" title="Start Date">
+                <input type="date" name="end_date" class="border p-2 rounded-lg" title="End Date">
+                
+                <select name="category" class="border p-2 rounded-lg bg-white">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Accessories">Accessories</option>
+                </select>
+
+                <select name="sort_by" class="border p-2 rounded-lg bg-white">
+                    <option value="created_date DESC">Date (Newest)</option>
+                    <option value="created_date ASC">Date (Oldest)</option>
+                    <option value="price ASC">Price (Low to High)</option>
+                    <option value="price DESC">Price (High to Low)</option>
+                    <option value="product_name ASC">Name (A-Z)</option>
+                </select>
+
+                <button type="submit" class="md:col-span-5 bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg transition">Filter Results</button>
+            </form>
+        </section>
+
+        <!-- Product Data Grid -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-slate-100 border-b">
+                    <tr>
+                        <th class="p-4 font-semibold text-slate-600">Product Name</th>
+                        <th class="p-4 font-semibold text-slate-600">Category</th>
+                        <th class="p-4 font-semibold text-slate-600">Price</th>
+                        <th class="p-4 font-semibold text-slate-600">Stock</th>
+                        <th class="p-4 font-semibold text-slate-600">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody" class="divide-y divide-slate-100">
+                    <!-- Dynamic Data loaded via AJAX -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <?php 
+// Include Footer at the very bottom
+include 'includes/footer.php'; 
+?>
+</main>
+
+<!-- Add Product Modal (Rendered only for Admins for security) -->
+<?php if ($is_admin): ?>
+<div id="addProductModal" class="hidden fixed inset-0 bg-black/50 flex justify-center items-center backdrop-blur-sm z-50">
+    <div class="bg-white p-8 rounded-xl w-96 shadow-xl">
+        <h2 class="text-xl font-bold mb-4">Add New Product</h2>
+        <form id="addProductForm" class="space-y-4">
+            <input type="hidden" name="action" value="add_product">
+            <input type="text" name="product_name" placeholder="Product Name" required class="w-full border p-2 rounded-lg">
+            <select name="category" required class="w-full border p-2 rounded-lg bg-white">
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Accessories">Accessories</option>
+            </select>
+            <input type="number" name="price" placeholder="Price" step="0.01" required class="w-full border p-2 rounded-lg">
+            <input type="number" name="available_stock" placeholder="Initial Stock" min="1" required class="w-full border p-2 rounded-lg">
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" onclick="document.getElementById('addProductModal').classList.add('hidden')" class="px-4 py-2 bg-slate-200 rounded-lg">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Save Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchProducts();
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const params = new URLSearchParams(formData).toString();
+            fetchProducts(params);
+        });
+
+        // Only attach addProductForm listener if the form exists (Admin view)
+        const addProductForm = document.getElementById('addProductForm');
+        if (addProductForm) {
+            addProductForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                fetch('ajax/product_ajax.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    if(data.status === 'success') {
+                        document.getElementById('addProductModal').classList.add('hidden');
+                        document.getElementById('addProductForm').reset();
+                        fetchProducts();
+                    }
+                })
+                .catch(err => console.error('Error adding product:', err));
+            });
+        }
+    });
+
+    function fetchProducts(query = '') {
+        fetch(`ajax/product_ajax.php?action=search&${query}`)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No products found.</td></tr>`;
+                return;
+            }
+
+           data.forEach(item => {
+    let actionButtons = `<button onclick="placeOrder(${item.id})" class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded hover:bg-emerald-200">Order 1 Item</button>`;
+
+    actionButtons += ` <a href="update_product.php?id=${item.id}" class="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200 ml-2">Edit</a>`;
+
+    tbody.innerHTML += `
+        <tr class="hover:bg-slate-50">
+            <td class="p-4 font-medium">${item.product_name}</td>
+            <td class="p-4">${item.category}</td>
+            <td class="p-4">$${item.price}</td>
+            <td class="p-4"><span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs">${item.available_stock} in stock</span></td>
+            <td class="p-4">${actionButtons}</td>
+        </tr>
+    `;
+});
+        });
+    }
+
+    function placeOrder(productId) {
+        const formData = new FormData();
+        formData.append('action', 'place_order');
+        formData.append('product_id', productId);
+        formData.append('quantity', 1); 
+
+        fetch('ajax/product_ajax.php', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            fetchProducts(); 
+        });
+    }
+</script>
+
