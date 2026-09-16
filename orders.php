@@ -6,7 +6,7 @@ include 'config/dbcon.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// Fetch all orders joined with the product_inventory table (fixed column name: order_date)
+
 try {
     $query = "SELECT o.id AS order_id, o.quantity, o.order_date, p.product_name, p.price 
               FROM orders o 
@@ -18,13 +18,12 @@ try {
     $orders = [];
 }
 
-// Include Header and Navigation Sidebar
 include 'includes/header.php';
 include 'includes/nav.php';
 ?>
 
 <!-- Main Content Area -->
-<main class="flex-1 p-8 overflow-y-auto md:ml-[280px]">
+<main class="flex-1 p-8 overflow-y-auto md">
     <div class="max-w-7xl mx-auto space-y-6">
         
         <!-- Header Section -->

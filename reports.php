@@ -7,34 +7,31 @@ try {
     $database = new Database();
     $db = $database->getConnection();
 
-    // 1. Fetch Total Orders Processed
     $orderStmt = $db->query("SELECT COUNT(*) FROM orders");
     $totalOrders = $orderStmt->fetchColumn();
 
-    // 2. Fetch Total Revenue Generated (Updated to use product_inventory)
+  
     $revenueStmt = $db->query("SELECT SUM(o.quantity * p.price) as total_revenue FROM orders o JOIN product_inventory p ON o.product_id = p.id");
     $revenueData = $revenueStmt->fetch(PDO::FETCH_ASSOC);
     $totalRevenue = $revenueData['total_revenue'] ?? 0;
 
-    // 3. Fetch Inventory Valuation (Updated to use product_inventory)
     $valuationStmt = $db->query("SELECT SUM(price * available_stock) as inventory_valuation FROM product_inventory");
     $valuationData = $valuationStmt->fetch(PDO::FETCH_ASSOC);
     $inventoryValuation = $valuationData['inventory_valuation'] ?? 0;
 
 } catch (PDOException $e) {
-    // Fallback values if database queries fail
+  
     $totalOrders = 0;
     $totalRevenue = 0;
     $inventoryValuation = 0;
 }
 
-// Include Header and Navigation Sidebar
 include 'includes/header.php';
 include 'includes/nav.php';
 ?>
 
 <!-- Main Content Area -->
-<main class="flex-1 p-8 overflow-y-auto md:ml-[280px]">
+<main class="flex-1 p-8 overflow-y-auto md">
     <div class="max-w-7xl mx-auto space-y-8">
         
         <header class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">

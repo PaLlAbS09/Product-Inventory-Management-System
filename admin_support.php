@@ -32,7 +32,7 @@ include 'includes/nav.php';
                     </tr>
                 </thead>
                 <tbody id="ticketTableBody" class="divide-y divide-slate-100">
-                    <!-- Dynamic Data loaded via AJAX -->
+                    
                 </tbody>
             </table>
         </section>

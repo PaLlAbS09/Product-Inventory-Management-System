@@ -4,7 +4,7 @@
         Admin Panel
     </div>
     <nav class="flex-1 p-4 space-y-2">
-        <a href="admin_dashboard.php" class="block bg-indigo-600 text-white px-4 py-3 rounded-lg font-medium">Dashboard</a>
+        <a href="admin_dashboard.php" class="block  text-white px-4 py-3 rounded-lg font-medium">Dashboard</a>
         <a href="products.php" class="block hover:bg-slate-800 px-4 py-3 rounded-lg transition">Products Inventory</a>
         <a href="users.php" class="block hover:bg-slate-800 px-4 py-3 rounded-lg transition">Manage Users</a>
         <a href="admin_support.php" class="block hover:bg-slate-800 px-4 py-3 rounded-lg transition">Support Tickets</a>

@@ -32,7 +32,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 <h1 class="text-2xl font-bold text-slate-800">Account Settings</h1>
                 <p class="text-sm text-slate-500">Manage your personal information.</p>
             </div>
-            <a href="dashboard/user_dashboard.php" class="text-emerald-600 font-medium hover:underline text-sm">&larr; Back to Dashboard</a>
+            <a href="user_dashboard.php" class="text-emerald-600 font-medium hover:underline text-sm">&larr; Back to Dashboard</a>
         </header>
 
         <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">

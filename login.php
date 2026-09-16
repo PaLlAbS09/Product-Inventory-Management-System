@@ -33,7 +33,7 @@ if (isset($_SESSION['admin_id'])) {
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-sm font-medium text-slate-700">Password</label>
-                    <a href="forget_password.php" class="text-xs text-indigo-600 hover:underline">Forgot password?</a>
+                    <a href="forgetpassword.php" class="text-xs text-indigo-600 hover:underline">Forgot password?</a>
                 </div>
                 <input type="password" name="password" required class="w-full border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
             </div>

@@ -4,45 +4,43 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     header('Location: login.php');    
     exit; 
 } 
-
-// Include database connection
-require_once 'config/dbcon.php';
+include 'config/dbcon.php';
 
 try {
     $database = new Database();
     $db = $database->getConnection();
 
-    // 1. Fetch Total Products Count (Fixed table name to product_inventory)
+   
     $prodStmt = $db->query("SELECT COUNT(*) FROM product_inventory");
     $totalProducts = $prodStmt->fetchColumn();
 
-    // 2. Fetch Total Orders Count
+  
     $orderStmt = $db->query("SELECT COUNT(*) FROM orders");
     $totalOrders = $orderStmt->fetchColumn();
 
-    // 3. Fetch Active Users Count
+   
     $userStmt = $db->query("SELECT COUNT(*) FROM users");
     $totalUsers = $userStmt->fetchColumn();
 
-    // 4. Fetch Pending Support Tickets Count
+  
     $ticketStmt = $db->query("SELECT COUNT(*) FROM support_tickets WHERE status = 'Pending'");
     $pendingTickets = $ticketStmt->fetchColumn();
 
 } catch (PDOException $e) {
-    // Fallback values if a query fails
+  
     $totalProducts = 0;
     $totalOrders = 0;
     $totalUsers = 0;
     $pendingTickets = 0;
 }
 
-// Include Header & Navigation Sidebar
+
 include 'includes/header.php';
 include 'includes/nav.php';
 ?>
 
-<!-- Main Content Area with proper left margin to clear the fixed sidebar -->
-<main class="flex-1 p-8 overflow-y-auto md:ml-[280px]">
+
+<main class="flex-1 p-8 overflow-y-auto md">
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-slate-800">Welcome back, <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Administrator') ?>!</h1>
         <p class="text-slate-500 mt-1">Here is the overview of your system today.</p>

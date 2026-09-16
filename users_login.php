@@ -26,11 +26,11 @@
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-sm font-semibold text-slate-700">Password</label>
-                    <a href="users_forgot_password.php" class="text-xs text-emerald-600 font-medium hover:underline">Forgot password?</a>
+                  
+                    <a href="change_password.php" class="text-xs text-emerald-600 font-medium hover:underline">Forgot password?</a>
                 </div>
                 <input type="password" name="password" required placeholder="••••••••" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
             </div>
-
 
             <?php if (isset($_GET['error'])): ?>
                 <div class="bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100">

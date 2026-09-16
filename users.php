@@ -2,8 +2,6 @@
 session_start();
 include 'config/auth_check.php';
 include 'config/dbcon.php';
-
-// Include Header and Navigation Sidebar
 include 'includes/header.php';
 include 'includes/nav.php';
 ?>
@@ -37,7 +35,7 @@ include 'includes/nav.php';
                     </tr>
                 </thead>
                 <tbody id="userTableBody" class="divide-y divide-slate-100">
-                    <!-- Dynamic Data loaded via AJAX -->
+                   
                 </tbody>
             </table>
         </section>
