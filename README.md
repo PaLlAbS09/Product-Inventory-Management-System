@@ -55,7 +55,7 @@ private $db_name = "product_inventory_management";
 private $username = "root";
 private $password = "";
 Run the ApplicationStart your Apache and MySQL services.Open your web browser and navigate to:
-http://localhost/your-project-folder/index.php
+http://localhost/php-class4/Product%20Inventory%20Management%20System/
 🔒 Security FeaturesPDO Prepared Statements: Prevents SQL injection vulnerabilities across all database queries.
 Password Hashing: Implements PHP's native password_hash() and password_verify() using secure cryptographic algorithms.
 Session & Cookie Validation: Restricts unauthorized endpoint access via strict session verification and secure cookie tokens.
