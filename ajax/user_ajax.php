@@ -6,14 +6,13 @@ include '../config/dbcon.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// Fetch All Users
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] == 'fetch_all') {
     $stmt = $db->query("SELECT id, full_name, email, created_at FROM users ORDER BY id DESC");
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
 }
 
-// Handle Add / Delete User
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 

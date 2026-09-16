@@ -38,6 +38,13 @@ if (isset($_SESSION['admin_id'])) {
                 <input type="password" name="password" required class="w-full border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
             </div>
 
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center text-slate-600 cursor-pointer">
+                    <input type="checkbox" name="remember" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 mr-2">
+                    Remember me
+                </label>
+            </div>
+
             <div id="loginError" class="hidden text-sm text-red-600 bg-red-50 p-3 rounded-lg"></div>
 
             <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-lg transition duration-200">
@@ -71,7 +78,6 @@ if (isset($_SESSION['admin_id'])) {
                 })
                 .then(data => {
                     if (data.status === 'success') {
-                        // Points to the dashboard folder shown in your explorer
                         window.location.href = 'admin_dashboard.php';
                     } else {
                         errorBox.textContent = data.message;
@@ -85,3 +91,6 @@ if (isset($_SESSION['admin_id'])) {
                 });
         });
     </script>
+</body>
+
+</html>

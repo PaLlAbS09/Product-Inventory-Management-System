@@ -1,14 +1,13 @@
 <?php
 session_start();
 
-
-unset($_SESSION['user_logged_in']);
-unset($_SESSION['user_id']);
-unset($_SESSION['user_name']);
+$_SESSION = array();
 
 session_destroy();
 
-
+if (isset($_COOKIE['user_remember'])) {
+    setcookie('user_remember', '', time() - 3600, '/');
+}
 header('Location: users_login.php');
 exit();
 ?>

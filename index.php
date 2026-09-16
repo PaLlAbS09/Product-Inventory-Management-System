@@ -1,16 +1,14 @@
-<?php  
-session_start();  
-
+<?php   
+session_start();   
 if (isset($_SESSION['admin_id'])) {
-    header("Location: admin_dashboard.php");      
-    exit(); 
+    header("Location: admin_dashboard.php");           
+    exit();
 }
-
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard/user_dashboard.php");      
-    exit();  
+    header("Location: dashboard/user_dashboard.php");           
+    exit();   
 }
-?>  
+?>   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,38 +17,35 @@ if (isset($_SESSION['user_id'])) {
     <title>StoreFront | Advanced Inventory & Shopping</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Swiper CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         body { font-family: 'Inter', sans-serif; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      .promo-banner {
-            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-        }
         .promo-banner {
             background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+        }
+        /* Custom Swiper pagination bullet styling */
+        .swiper-pagination-bullet-active {
+            background-color: #059669 !important;
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased">
-
-    
+         
     <header class="bg-white sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 md:gap-8">
-       
             <a href="index.php" class="flex-shrink-0 text-2xl font-extrabold tracking-tight text-slate-900">
                 Store<span class="text-emerald-600">Front</span>
             </a>
-
-        
             <div class="hidden md:flex flex-1 max-w-2xl relative">
                 <input type="text" placeholder="Search for products, brands and more..." 
-                    class="w-full bg-slate-50 border border-slate-200 text-sm rounded-l-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                     class="w-full bg-slate-50 border border-slate-200 text-sm rounded-l-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
                 <button class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-r-xl transition font-medium">
                     Search
                 </button>
             </div>
-
-            
             <div class="flex items-center gap-2 md:gap-6 text-sm font-medium">
                 <a href="users_login.php" class="flex items-center gap-1.5 text-slate-700 hover:text-emerald-600 transition">
                     <span class="hidden md:inline">Login / Sign Up</span>
@@ -74,10 +69,9 @@ if (isset($_SESSION['user_id'])) {
             </ul>
         </div>
     </nav>
-
-    
+         
     <main class="max-w-7xl mx-auto px-4 py-6 space-y-8">
-        
+                 
         <section class="promo-banner rounded-2xl p-8 md:p-12 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between">
             <div class="relative z-10 max-w-lg space-y-4 text-center md:text-left">
                 <span class="bg-white/20 text-emerald-50 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Grand Opening</span>
@@ -88,21 +82,20 @@ if (isset($_SESSION['user_id'])) {
                     Discover millions of products at unbeatable prices. Fast delivery, secure payments, and top-tier inventory management.
                 </p>
             </div>
-            
             <div class="absolute -right-10 -top-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
             <div class="absolute right-20 -bottom-20 w-56 h-56 bg-emerald-900/20 rounded-full blur-2xl"></div>
         </section>
-
-      
+               
         <section>
             <h2 class="text-xl font-bold text-slate-800 mb-6 px-2">Access Your Dashboard</h2>
             <div class="grid md:grid-cols-2 gap-6">
-                
-                
+                <!-- Customer Portal Card -->
                 <a href="users_login.php" class="group bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-sm">
-                        
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Customer Portal</h3>
                     <p class="text-slate-500 mb-6">Browse our massive catalog, add items to your cart, and track your orders in real-time.</p>
@@ -110,12 +103,14 @@ if (isset($_SESSION['user_id'])) {
                         Start Shopping &rarr;
                     </span>
                 </a>
-
-               
+                                
+                <!-- Admin & Seller Portal Card -->
                 <a href="login.php" class="group bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-sm">
-                        
+                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.037A11.955 11.955 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2 group-hover:text-indigo-600 transition">Admin & Seller Portal</h3>
                     <p class="text-slate-500 mb-6">Manage inventory, process customer orders, view revenue analytics, and handle support tickets.</p>
@@ -123,63 +118,131 @@ if (isset($_SESSION['user_id'])) {
                         Manage Store &rarr;
                     </span>
                 </a>
-
             </div>
         </section>
 
-   
-       <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold text-slate-800">Trending Right Now</h2>
-        <a href="users_login.php" class="text-sm font-semibold text-emerald-600 hover:underline">View All</a>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    
-        <!-- Product 1: Smartphone -->
-        <div class="border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
-            <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
-                <img src="./assets/image/phone1.jpg" alt="Premium Smartphone" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        <!-- Trending Right Now Swiper Slider Section -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 overflow-hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-slate-800">Trending Right Now</h2>
+                <a href="users_login.php" class="text-sm font-semibold text-emerald-600 hover:underline">View All</a>
             </div>
-            <h4 class="font-semibold text-slate-700 text-sm truncate">Premium Smartphone</h4>
-            <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
-        </div>
-      
-        <!-- Product 2: Laptop -->
-        <div class="border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
-            <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
-                <img src="./assets/image/laptop1.jpg" alt="Pro Laptop M2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+
+            <!-- Swiper Container -->
+            <div class="swiper trendingSwiper pb-8">
+                <div class="swiper-wrapper">
+                    
+                    <!-- Product 1: Smartphone -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/phone1.jpg" alt="Premium Smartphone" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Premium Smartphone</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                   
+                    <!-- Product 2: Laptop -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/laptop1.jpg" alt="Pro Laptop M2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Pro Laptop M2</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                     
+                    <!-- Product 3: Headphones -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/headphone1.jpg" alt="Wireless Noise Cancelling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Wireless Noise Cancelling</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                     
+                    <!-- Product 4: Smart Watch -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/watch2.jpg" alt="Smart Watch Series 8" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Smart Watch Series 8</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                    <!-- Product 5: Clothing -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/t-shirt.jpg" alt="Casual T-Shirt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Casual T-Shirt</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                    <!-- Product 5: cooking  -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/Stainless-Steel-Cookware-Set.jpeg" alt="Stainless Steel Cookware" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Stainless Steel Cookware</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                    <!-- Product 6: home Appliances -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/Electric-Hand-Blender-250W.jpg" alt="Blender" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Blender</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                    <!-- Product 7: beauty -->
+                    <div class="swiper-slide border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
+                        <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                            <img src="./assets/image/Skincare Set.jpg" alt="Skincare Set" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <h4 class="font-semibold text-slate-700 text-sm truncate">Skincare Set</h4>
+                        <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
+                    </div>
+                    
+
+                </div>
+                <!-- Pagination Dots -->
+                <div class="swiper-pagination"></div>
             </div>
-            <h4 class="font-semibold text-slate-700 text-sm truncate">Pro Laptop M2</h4>
-            <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
-        </div>
-        
-        <!-- Product 3: Headphones -->
-        <div class="border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
-            <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
-                <img src="./assets/image/headphone1.jpg" alt="Wireless Noise Cancelling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            </div>
-            <h4 class="font-semibold text-slate-700 text-sm truncate">Wireless Noise Cancelling</h4>
-            <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
-        </div>
-        
-        <!-- Product 4: Smart Watch -->
-        <div class="border border-slate-100 rounded-xl p-4 hover:border-emerald-200 transition cursor-pointer group">
-            <div class="aspect-square bg-slate-50 rounded-lg mb-3 overflow-hidden">
-                <img src="./assets/image/watch2.jpg" alt="Smart Watch Series 8" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            </div>
-            <h4 class="font-semibold text-slate-700 text-sm truncate">Smart Watch Series 8</h4>
-            <p class="text-emerald-600 font-bold mt-1">Log in to view</p>
-        </div>
-        
-    </div>
-</section>
+        </section>
 
     </main>
 
-  
     <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-sm text-slate-500">
         <p>&copy; <?php echo date('Y'); ?> StoreFront Inventory Management System. All rights reserved.</p>
     </footer>
 
+    <!-- Swiper JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const trendingSwiper = new Swiper('.trendingSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 16,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 16,
+                },
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 16,
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 16,
+                },
+            },
+        });
+    </script>
 </body>
 </html>

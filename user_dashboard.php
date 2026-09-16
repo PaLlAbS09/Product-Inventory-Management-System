@@ -1,5 +1,27 @@
 <?php
 session_start();
+
+if ((!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) && isset($_COOKIE['user_remember'])) {
+    require_once 'config/dbcon.php';
+    try {
+        $database = new Database();
+        $db = $database->getConnection();
+        
+        $stmt = $db->prepare("SELECT id, full_name FROM users WHERE id = :id LIMIT 1");
+        $stmt->execute([':id' => $_COOKIE['user_remember']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user) {
+            $_SESSION['user_logged_in'] = true;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['full_name'];
+        }
+    } catch (Exception $e) {
+        
+    }
+}
+
+
 if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
     header("Location: users_login.php");
     exit;
@@ -52,9 +74,9 @@ if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true)
                     </svg>
                 </a>
 
-                <a href="user_logout.php" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg transition font-semibold border border-red-100">
-                    Logout
-                </a>
+               <a href="user_logout.php" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg transition font-semibold border border-red-100">
+    Logout
+</a>
             </div>
         </div>
     </header>

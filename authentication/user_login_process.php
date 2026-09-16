@@ -14,26 +14,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $database = new Database();
         $db = $database->getConnection();
-
+        
         $stmt = $db->prepare("SELECT id, full_name, password_hash FROM users WHERE email = :email LIMIT 1");
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password_hash'])) {
-            // Establish session
+            
             $_SESSION['user_logged_in'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['full_name'];
+
             
-            header("Location: ../dashboard/user_dashboard.php");
+            if (isset($_POST['remember']) && $_POST['remember'] === 'on') {
+                setcookie('user_remember', $user['id'], time() + (86400 * 30), "/", "", false, true);
+            }
+
+            
+            header("Location: ../user_dashboard.php");
             exit;
         } else {
-            // Authentication failed
+            
             header("Location: ../users_login.php?error=invalid");
             exit;
         }
     } catch (PDOException $e) {
-        die("Database error occurred.");
+        die("Database error occurred: " . $e->getMessage());
     }
+} else {
+    header("Location: ../users_login.php");
+    exit;
 }
 ?>

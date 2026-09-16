@@ -1,6 +1,5 @@
-<?php 
+<?php  
 session_start();
-
 $is_admin = isset($_SESSION['admin_id']) || (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true);
 $is_user = isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true;
 
@@ -19,17 +18,14 @@ if ($is_admin) {
 }
 ?>
 
-
 <main class="flex-1 p-8 overflow-y-auto md">
     <div class="max-w-7xl mx-auto space-y-8">
-                 
-       
+             
         <header class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-100">
             <div>
                 <h1 class="text-2xl font-bold text-slate-700">Inventory Catalog</h1>
-                <p class="text-sm text-slate-500">Browse available products and place orders.</p>
+                <p class="text-sm text-slate-500">Browse available products and manage inventory.</p>
             </div>
-            
             
             <?php if ($is_admin): ?>
                 <button onclick="document.getElementById('addProductModal').classList.remove('hidden')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition">
@@ -53,6 +49,7 @@ if ($is_admin) {
                     <option value="phones">Phones</option>
                     <option value="laptops">Laptops</option>
                     <option value="watches">Watches</option>
+                    <option value="others">Beauty</option>
                 </select>
 
                 <select name="sort_by" class="border p-2 rounded-lg bg-white">
@@ -95,7 +92,6 @@ if ($is_admin) {
     <div class="bg-white p-8 rounded-xl w-96 shadow-xl">
         <h2 class="text-xl font-bold mb-4">Add New Product</h2>
         
-       
         <form id="addProductForm" class="space-y-4">
             <input type="hidden" name="action" value="add_product">
            
@@ -113,6 +109,7 @@ if ($is_admin) {
                 <option value="phones">Phones</option>
                 <option value="laptops">Laptops</option>
                 <option value="watches">Watches</option>
+                <option value="others">Beauty</option>
             </select>
             
             <input type="number" name="price" placeholder="Price" step="0.01" required class="w-full border p-2 rounded-lg">
@@ -173,13 +170,13 @@ if ($is_admin) {
             }
 
             data.forEach(item => {
-                let actionButtons = `<button onclick="placeOrder(${item.id})" class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded hover:bg-emerald-200">Order 1 Item</button>`;
-                actionButtons += ` <a href="update_product.php?id=${item.id}" class="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200 ml-2">Edit</a>`;
+                // Replaced 'Order 1 Item' with 'Delete' action button
+                let actionButtons = `<button onclick="deleteProduct(${item.id})" class="text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition">Delete</button>`;
+                actionButtons += ` <a href="update_product.php?id=${item.id}" class="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200 ml-2 transition">Edit</a>`;
 
                 let imageHtml = item.image_path 
                     ? `<img src="${item.image_path}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shadow-sm">`
                     : `<div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-[10px] text-slate-400 border border-slate-200">No Img</div>`;
-
                 
                 let stock = parseInt(item.available_stock);
                 let stockBadgeClass = "bg-indigo-100 text-indigo-800"; 
@@ -190,7 +187,6 @@ if ($is_admin) {
                     stockBadgeClass = "bg-amber-100 text-amber-800"; 
                 }
                 
-
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50">
                         <td class="p-4">${imageHtml}</td>
@@ -205,17 +201,22 @@ if ($is_admin) {
         });
     }
 
-    function placeOrder(productId) {
-        const formData = new FormData();
-        formData.append('action', 'place_order');
-        formData.append('product_id', productId);
-        formData.append('quantity', 1); 
+    // Replaced placeOrder function with deleteProduct API request handler
+    function deleteProduct(productId) {
+        if (confirm('Are you sure you want to permanently delete this product?')) {
+            const formData = new FormData();
+            formData.append('action', 'delete_product');
+            formData.append('product_id', productId);
 
-        fetch('ajax/product_ajax.php', { method: 'POST', body: formData })
-        .then(res => res.json())
-        .then(data => {
-            alert(data.message);
-            fetchProducts(); 
-        });
+            fetch('ajax/product_ajax.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                if (data.status === 'success') {
+                    fetchProducts(); 
+                }
+            })
+            .catch(err => console.error('Error deleting product:', err));
+        }
     }
 </script>

@@ -26,10 +26,17 @@
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-sm font-semibold text-slate-700">Password</label>
-                  
                     <a href="change_password.php" class="text-xs text-emerald-600 font-medium hover:underline">Forgot password?</a>
                 </div>
                 <input type="password" name="password" required placeholder="••••••••" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
+            </div>
+
+            <!-- Remember Me Checkbox Added Here -->
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center text-slate-600 cursor-pointer">
+                    <input type="checkbox" name="remember" class="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 mr-2">
+                    Remember me
+                </label>
             </div>
 
             <?php if (isset($_GET['error'])): ?>

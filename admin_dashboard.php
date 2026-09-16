@@ -1,9 +1,31 @@
-<?php 
-session_start(); 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {    
-    header('Location: login.php');    
-    exit; 
-} 
+<?php  
+session_start();  
+if ((!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) && isset($_COOKIE['admin_remember'])) {
+    require_once 'config/dbcon.php';
+    try {
+        $database = new Database();
+        $db = $database->getConnection();
+        
+        $stmt = $db->prepare("SELECT id, name FROM admins WHERE id = :id LIMIT 1");
+        $stmt->execute([':id' => $_COOKIE['admin_remember']]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($admin) {
+            
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_name'] = $admin['name'];
+        }
+    } catch (Exception $e) {
+        
+    }
+}
+
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {        
+    header('Location: login.php');        
+    exit;
+}
+
 include 'config/dbcon.php';
 
 try {
